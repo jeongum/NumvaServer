@@ -16,26 +16,28 @@ use Illuminate\Support\Facades\Route;
 
 /* Auth */
 Route::prefix('/auth')->group(function () {
-    Route::post('validEmail', 'API\AuthAPIController@validEmail');
+    
     Route::post('register', 'API\AuthAPIController@register');
     Route::post('login', 'API\AuthAPIController@login');
     Route::middleware('auth:api')->group(function() {
         Route::get('logout', 'API\AuthAPIController@logout');
         Route::get('user', 'API\AuthAPIController@getUser');
     });
+
+    Route::post('validEmail', 'API\AuthAPIController@validEmail');
+    Route::post('findEmail', 'API\AuthAPIController@findEmail'); 
+    Route::post('resetPW', 'API\AuthAPIController@resetPW');
+    Route::post('certPhone', 'API\AuthAPIController@certPhone');
+     
 });
 
-/* Car */
-Route::prefix('car')->group(function(){
-    Route::post('/register', 'API\CarAPIController@register_car');
-    Route::put('/update/{id}', 'API\CarAPIController@update_car');
-    Route::delete('/delete/{id}', 'API\CarAPIController@delete_car');
-});
-
-
-
-/* Subscriber */
-Route::prefix('subscriber')->group(function(){
-    Route::post('/register', 'API\SubscriberAPIController@register');
-    Route::post('/unsubscribe', 'API\SubscriberAPIController@unsubscribe');
+Route::middleware('auth:api')->group(function(){
+    Route::prefix('/memo')->group(function(){
+        Route::post('setCurrent','API\MemoAPIController@setCurrentMemo');
+        Route::get('getCurrent','API\MemoAPIController@getCurrentMemo');
+        Route::post('store', 'API\MemoAPIController@storeMemo');
+        Route::get('getStored','API\MemoAPIController@getStoredMemo');
+        Route::post('updateStored', 'API\MemoAPIController@updateStoredMemo');
+        Route::post('deleteStored', 'API\MemoAPIController@deleteStoredMemo');
+    });
 });
