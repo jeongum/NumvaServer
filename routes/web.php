@@ -22,6 +22,7 @@ Route::get('/howtouse', function () {
 });
 
 /* Route for QR scan */
+Route::get('/qr/generate', 'QRController@generateQRCode');
 Route::get('/qr/service', 'QRController@index')->name('qr.service');
 Route::get('/qr/{slug}', function ($slug) {
     return redirect()->route('qr.service')->with('qr_id',$slug);
@@ -31,3 +32,4 @@ Route::get('/qr/{slug}', function ($slug) {
 Route::prefix('admin')->group(function(){
     Route::get('generate-qr', 'QRController@generateQRCode');
 });
+
