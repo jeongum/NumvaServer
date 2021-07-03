@@ -2,15 +2,17 @@
 @section('content')
 @include('layouts._qrtest_css')
 
-<div id="qr_test">
-	<img alt="" src="{{asset('img/full_logo.png')}}">
-	<p class="h1_sub mb-0">차주용<br>개인정보보호 서비스</p>
+<div id="qr_service">
+	<div class="header">
+    	<img alt="" src="{{asset('img/full_logo.png')}}">
+    	<p class="mb-0">차주용<br>개인정보보호 서비스</p>
+	</div>
 	<fieldset class="parking-memo">
           <legend>주차메모</legend>
-          <p>5분 뒤 출차 예정입니다.</p>
+          <span>{{$memo->memo}}</span>
 	</fieldset>
 	<div class="safety-number-div">
-		<p class="pt-3">
+		<p class="safety-number-div-p">
 		<span id="safety-number">0505-1234-5678</span><br>
 		해당 안심번호는 <span id="countdown">18:05</span>후에 만료됩니다.
 		</p>
@@ -21,7 +23,7 @@
                     <path id="패스_8032" data-name="패스 8032" d="M4.545,2.054a3.166,3.166,0,0,1,4.738.294l3.253,4.184a3.158,3.158,0,0,1,.573,2.709l-.993,3.973a1.231,1.231,0,0,0,.323,1.169L16.9,18.84a1.231,1.231,0,0,0,1.169.323l3.971-.993a3.166,3.166,0,0,1,2.711.573L28.933,22a3.165,3.165,0,0,1,.3,4.738l-1.878,1.878a5.043,5.043,0,0,1-5.219,1.274,33.812,33.812,0,0,1-12.717-8.02A33.809,33.809,0,0,1,1.394,9.149,5.044,5.044,0,0,1,2.668,3.927L4.546,2.052Zm20.087-.646a.968.968,0,0,1,1.37,0L30.84,6.246a.968.968,0,0,1,0,1.37L26,12.454a.969.969,0,0,1-1.37-1.37L27.818,7.9H18.542a.968.968,0,1,1,0-1.935h9.276L24.63,2.777a.968.968,0,0,1,0-1.37Z" transform="translate(0 0)" fill="#5b35f5" fill-rule="evenodd"/>
                   </g>
                 </svg>
-    			<span>전화연결</span>
+    			<span>전화 연결</span>
 			</a>
 		</button>
 		<button class="to-text">
@@ -32,7 +34,7 @@
                     <path id="패스_8033" data-name="패스 8033" d="M35.313,1.4a.928.928,0,0,1,1.315,0l4.642,4.642a.928.928,0,0,1,0,1.315L36.627,12a.93.93,0,0,1-1.315-1.315L38.37,7.624h-8.9a.928.928,0,0,1,0-1.857h8.9L35.312,2.71a.928.928,0,0,1,0-1.315Z" transform="translate(87.458 392.1)" fill="#5b35f5" fill-rule="evenodd"/>
                   </g>
                 </svg>
-    			<span>문자전송</span>
+    			<span>문자 연결</span>
 			</a>
 		</button>
 	</div>

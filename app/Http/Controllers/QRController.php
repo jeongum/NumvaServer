@@ -6,15 +6,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\QRData;
+use App\Models\User;
+use App\Models\Memo;
+use App\Models\SafetyInfo;
 
 class QRController extends Controller
 {
     /* Show QR View to Scanner */
     public function index(){
         $qr_id = Session::get('qr_id');
-        $qrcode = QRData::where('qr_id', $qr_id)->first();
+        $qrcode = QRData::where('qr_id', '784495')->first();
+        $safety_info = SafetyInfo::where('qr_id', $qrcode->id)->first();
         
-        return view('qr/service', compact('qrcode'));
+        $memo = $safety_info->memo;
+        
+        
+        return view('qr/service', compact('memo'));
     }
     
     /* Generate QR */
