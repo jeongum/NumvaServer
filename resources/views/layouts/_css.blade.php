@@ -150,4 +150,113 @@ body{
     font-weight: 700;
     font-size: 8.33vh;
 }
+
+
+/* QR service CSS */
+#qr_service{
+    min-height: 812px;
+    background-color: #f5f5f5;
+    text-align: center;
+    padding: 20px;
+}
+#qr_service .header{
+    font-size: 18px;
+    padding: 20px;
+}
+#qr_service .header img{
+    width: 150px;   
+}
+#qr_service fieldset{
+    border: 0.3px solid #707070; 
+    border-top-color: #707070; 
+    border-radius: 10px; 
+    margin: 15px 25px;
+    padding: 15px;
+    font-size: 18px;
+}
+#qr_service fieldset legend{
+    width: 30%;
+    font-size: 16px;
+    margin: 0;
+    line-height: 1;
+}
+
+#qr_service .safety-number-div{
+    margin: 15px 25px;
+    padding: 15px 0;
+}
+#qr_service .safety-number-div .safety-number-div-p{
+    font-size: 11px;
+    padding-bottom: 30px;
+    margin: 0;
+}
+#qr_service .safety-number-div span#safety-number{
+    font-size: 23px;
+    font-weight: 700;
+    color: black;
+}
+#qr_service .safety-number-div span#countdown{
+    font-size: 11px;
+    font-weight: 500;
+    color: #5B35F5;
+}
+#qr_service .to-call{
+    margin: 5px auto ;
+    box-shadow: 0 0 20px rgba(0,0,0,0.16);
+    border-radius: 20px;
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    border: none;
+}
+#qr_service .to-call a{
+    color: black;
+    text-decoration: none;
+}
+#qr_service .to-call svg{
+    vertical-align: middle; 
+}      
+#qr_service .to-call span{
+    font-size: 18px;
+    margin-left: 50px;
+    vertical-align: middle;
+}
+#qr_service .to-text{
+    margin: 5px auto ;
+    box-shadow: 0 0 20px rgba(0,0,0,0.16);
+    border-radius: 20px;
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    border: none;
+}
+#qr_service .to-text a{
+    color: black;
+    text-decoration: none;
+}
+#qr_service .to-text svg{
+    vertical-align: middle; 
+}      
+#qr_service .to-text span{
+    font-size: 18px;
+    margin-left: 50px;
+    vertical-align: middle;
+}
+#qr_service .service-des{
+    padding: 10px;
+    margin: 15px;
+    font-size: 13px;
+}
+#qr_service .service-des span{
+    color: #5B35F5;
+    font-weight: 500;
+}
+#qr_service .go-app{
+    width: 80%;
+    margin:auto;
+}
+#qr_service .go-app .col-6:first-child{
+    text-align: left;
+    font-size: 18px;
+}
 </style>

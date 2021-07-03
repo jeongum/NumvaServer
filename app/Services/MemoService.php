@@ -8,14 +8,13 @@ namespace App\Services;
  */
 
 use App\Models\User;
-use App\Models\CurrentMemo;
-use App\Models\StoredMemo;
+use App\Models\Memo;
 
 class MemoService
 {
-    public function setCurrentMemo($memo, $user_id){
-        if(CurrentMemo::where('user_id', $user_id)->exists()){
-            $cur_memo = CurrentMemo::where('user_id', $user_id) ->first();
+    public function setMemo($memo, $user_id){
+        if(Memo::where('user_id', $user_id)->exists()){
+            $cur_memo = Memo::where('user_id', $user_id) ->first();
             $cur_memo -> memo = $memo;
             $cur_memo -> save();
             return true;
@@ -24,54 +23,16 @@ class MemoService
             'user_id' => $user_id,
             'memo' => $memo
         );
-        CurrentMemo::create($data);
+        Memo::create($data);
         return true;
     }
     
-    public function storeMemo($memo, $user_id){
-        if(StoredMemo::where('user_id', $user_id)->count() >= 10){
-            return false;
-        }
-        $data = array(
-            'user_id' => $user_id,
-            'memo' => $memo
-        );
-        StoredMemo::create($data);
-        return true;
-    }
-    
-    public function getCurrentMemo($user_id){
-        if(CurrentMemo::where('user_id', $user_id)->exists()){
-            $cur_memo = CurrentMemo::where('user_id', $user_id) ->first();
+    public function getMemo($user_id){
+        if(Memo::where('user_id', $user_id)->exists()){
+            $cur_memo = Memo::where('user_id', $user_id) ->first();
             return $cur_memo;
         }
         return null;
     }
     
-    public function getStoredMemo($user_id){
-        if(StoredMemo::where('user_id', $user_id)->exists()){
-            $memos = StoredMemo::where('user_id', $user_id)->get();
-            return $memos;
-        }
-        return null;
-    }
-    
-    public function updateStoredMemo($data){
-        $memo = StoredMemo::find($data['memo_id']);
-        if($memo != null){
-            $memo->memo = $data['memo'];
-            $memo->save();
-            return $memo;
-        }
-        return null;
-    }
-    
-    public function deleteStoredMemo($data){
-        $memo = StoredMemo::find($data['memo_id']);
-        if($memo != null){
-            $memo->delete();
-            return true;
-        }
-        return false;
-    }
 }

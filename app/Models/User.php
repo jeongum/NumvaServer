@@ -30,10 +30,13 @@ class User extends Authenticatable
         //'remember_token',
     ];
   
-    public function current_memo(){
-        return $this->hasOne(CurrentMemo::class, 'user_id');
+    public function memo(){
+        return $this->hasOne(Memo::class, 'user_id');
     }
-    public function stored_memos(){
-        return $this->hasMany(StoredMemo::class, 'user_id');
+    
+    public function safety_info(){
+        return $this->hasOne(SafetyInfo::class, 'user_id');
     }
+    
+    
 }

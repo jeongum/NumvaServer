@@ -16,28 +16,26 @@ use Illuminate\Support\Facades\Route;
 
 /* Auth */
 Route::prefix('/auth')->group(function () {
-    
     Route::post('register', 'API\AuthAPIController@register');
     Route::post('login', 'API\AuthAPIController@login');
     Route::middleware('auth:api')->group(function() {
         Route::get('logout', 'API\AuthAPIController@logout');
         Route::get('user', 'API\AuthAPIController@getUser');
     });
-
     Route::post('validEmail', 'API\AuthAPIController@validEmail');
     Route::post('findEmail', 'API\AuthAPIController@findEmail'); 
     Route::post('resetPW', 'API\AuthAPIController@resetPW');
     Route::post('certPhone', 'API\AuthAPIController@certPhone');
-     
 });
 
 Route::middleware('auth:api')->group(function(){
+    /* Memo API */
     Route::prefix('/memo')->group(function(){
         Route::post('setCurrent','API\MemoAPIController@setCurrentMemo');
         Route::get('getCurrent','API\MemoAPIController@getCurrentMemo');
-        Route::post('store', 'API\MemoAPIController@storeMemo');
-        Route::get('getStored','API\MemoAPIController@getStoredMemo');
-        Route::post('updateStored', 'API\MemoAPIController@updateStoredMemo');
-        Route::post('deleteStored', 'API\MemoAPIController@deleteStoredMemo');
+    });
+    
+    Route::prefix('/safetyInfo')->group(function(){
+       Route::post('setQR', 'API\SafetyInfoAPIController@setSafetyInfo'); 
     });
 });
