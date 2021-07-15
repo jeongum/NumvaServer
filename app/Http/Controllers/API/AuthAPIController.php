@@ -140,6 +140,18 @@ class AuthAPIController extends Controller
         }
     }
     
+    public function registerSecPhone(Request $request){
+        $user = $request->user();
+        $user->second_phone = $request->second_phone;
+        $user->save();
+        
+        return response()->json([
+            "isSuccess" => true,
+            "code" => 200,
+            "message" => "대리 전화번호 설정 완료"
+        ]);
+        
+    }
     
     public function certPhone(Request $request){
         $sID = "ncp:sms:kr:268949396524:numva"; // 서비스 ID

@@ -10,6 +10,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\SafetyInfo;
 use App\Models\QRData;
+use App\Models\Memo;
 
 class SafetyInfoService
 {
@@ -25,12 +26,13 @@ class SafetyInfoService
         }
         
         $qr = QRData::where('qr_id', $data['qr_id'])->first();
-        $safety_info = array(
+        $response = array(
             'user_id' => $data['user_id'],
             'qr_id' => $qr->id
         );
-        SafetyInfo::create($safety_info);
         
-        return $safety_info;
+        SafetyInfo::create($response);
+        
+        return $response;
     }
 }

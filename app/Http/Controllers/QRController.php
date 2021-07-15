@@ -20,7 +20,6 @@ class QRController extends Controller
         
         $memo = $safety_info->memo;
         
-        
         return view('qr/service', compact('memo'));
     }
     

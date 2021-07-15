@@ -16,7 +16,7 @@ class MemoAPIController extends Controller
         
         $memo = $data['memo'];
         
-        if($memo_service->setCurrentMemo($memo, $user)){
+        if($memo_service->setMemo($memo, $user)){
             return response()->json([
                 "memo" => $memo,
                 "isSuccess" => true,
@@ -34,7 +34,7 @@ class MemoAPIController extends Controller
     
     function getCurrentMemo(Request $request){
         $memo_service = new MemoService();
-        $memo = $memo_service->getCurrentMemo($request->user()->id);
+        $memo = $memo_service->getMemo($request->user()->id);
         if($memo != null){
             return response()->json([
                 "memo" => $memo,

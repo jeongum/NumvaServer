@@ -1,0 +1,18 @@
+[0;1;32m●[0m ssh.service - OpenBSD Secure Shell server
+   Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+   Active: [0;1;32mactive (running)[0m since Thu 2021-07-08 02:41:56 UTC; 9min ago
+ Main PID: 17242 (sshd)
+    Tasks: 1 (limit: 4702)
+   CGroup: /system.slice/ssh.service
+           └─17242 /usr/sbin/sshd -D
+
+Jul 08 02:51:09 numva sshd[17407]: [0;1;31m[0;1;39m[0;1;31merror: Received disconnect from 115.91.214.2 port 34640:3: com.jcraft.jsch.JSchException: Auth fail [preauth][0m
+Jul 08 02:51:09 numva sshd[17407]: Disconnected from authenticating user root 115.91.214.2 port 34640 [preauth]
+Jul 08 02:51:10 numva sshd[17409]: [0;1;31m[0;1;39m[0;1;31merror: Received disconnect from 115.91.214.2 port 13658:3: com.jcraft.jsch.JSchException: Auth fail [preauth][0m
+Jul 08 02:51:10 numva sshd[17409]: Disconnected from authenticating user root 115.91.214.2 port 13658 [preauth]
+Jul 08 02:51:10 numva sshd[17411]: [0;1;31m[0;1;39m[0;1;31merror: Received disconnect from 115.91.214.2 port 24479:3: com.jcraft.jsch.JSchException: Auth fail [preauth][0m
+Jul 08 02:51:10 numva sshd[17411]: Disconnected from authenticating user root 115.91.214.2 port 24479 [preauth]
+Jul 08 02:51:13 numva sshd[17413]: [0;1;31m[0;1;39m[0;1;31merror: Received disconnect from 115.91.214.2 port 43590:3: com.jcraft.jsch.JSchException: Auth fail [preauth][0m
+Jul 08 02:51:13 numva sshd[17413]: Disconnected from authenticating user root 115.91.214.2 port 43590 [preauth]
+Jul 08 02:51:13 numva sshd[17415]: [0;1;31m[0;1;39m[0;1;31merror: Received disconnect from 115.91.214.2 port 49112:3: com.jcraft.jsch.JSchException: Auth fail [preauth][0m
+Jul 08 02:51:13 numva sshd[17415]: Disconnected from authenticating user root 115.91.214.2 port 49112 [preauth]
