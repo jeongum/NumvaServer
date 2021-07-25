@@ -1,6 +1,5 @@
 @extends('layouts.master')
 @section('content')
-@include('layouts._qrtest_css')
 
 <div id="qr_service">
 	<div class="header">
