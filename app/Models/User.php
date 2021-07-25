@@ -35,8 +35,14 @@ class User extends Authenticatable
     }
     
     public function safety_info(){
-        return $this->hasOne(SafetyInfo::class, 'user_id');
+        return $this->hasMany(SafetyInfo::class, 'user_id');
     }
     
+    public function second_phone(){
+        return $this->hasMany(SecondPhone::class, 'user_id');
+    }
     
+    public function rep_second_phone(){
+        return $this->hasMany(SecondPhone::class, 'user_id')->where('isrep','Y');
+    }
 }

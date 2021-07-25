@@ -22,8 +22,8 @@ Route::get('/howtouse', function () {
 });
 
 /* Route for QR scan */
-Route::get('/qr/generate', 'QRController@generateQRCode');
-Route::get('/qr/service', 'QRController@index')->name('qr.service');
+Route::get('/qr/generate', 'QRController@index');
+Route::get('/qr/service', 'QRController@service')->name('qr.service');
 Route::get('/qr/{slug}', function ($slug) {
     return redirect()->route('qr.service')->with('qr_id',$slug);
 });    

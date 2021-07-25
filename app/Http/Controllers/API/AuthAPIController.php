@@ -10,6 +10,14 @@ use App\Models\User;
 
 class AuthAPIController extends Controller
 {
+    public function authException(){
+        return response()->json([
+            "isSuccess" => false,
+            "code" => 400,
+            "message" => "인증실패"
+        ]);
+    }
+    
     public function register(Request $request) {
         $data = array(
             'name' => $request -> name,
@@ -70,10 +78,18 @@ class AuthAPIController extends Controller
     }
     
     public function getUser(Request $request) {
+        $user = array(
+            'id' => $request->user()->id,
+            'name' => $request->user()->name,
+            'email' => $request->user()->email,
+            'phone' => $request->user()->phone,
+            'second_phone' => Auth::user()->rep_second_phone()->first()->second_phone,
+            'birth' => $request->user()->birth,
+        );
         return response()->json([
             "isSuccess" => true,
             "code" => 200,
-            "user" => $request->user(),
+            "user" => $user,
             "message" => "유저 정보"
         ]);
     }
@@ -140,6 +156,7 @@ class AuthAPIController extends Controller
         }
     }
     
+<<<<<<< HEAD
     public function registerSecPhone(Request $request){
         $user = $request->user();
         $user->second_phone = $request->second_phone;
@@ -151,6 +168,22 @@ class AuthAPIController extends Controller
             "message" => "대리 전화번호 설정 완료"
         ]);
         
+=======
+    public function checkToken(Request $request){
+        $isValid = Auth::guard('api')->check();
+        if($isValid) {
+            return response()->json([
+                "isSuccess" => true,
+                "code" => 200,
+                "message" => "유효한 토큰"
+            ]);
+        }
+        return response()->json([
+            "isSuccess" => false,
+            "code" => 400,
+            "message" => "유효하지 않은 토큰"
+        ]);
+>>>>>>> secondPhone
     }
     
     public function certPhone(Request $request){

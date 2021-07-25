@@ -27,6 +27,8 @@ Route::prefix('/auth')->group(function () {
     Route::post('findEmail', 'API\AuthAPIController@findEmail'); 
     Route::post('resetPW', 'API\AuthAPIController@resetPW');
     Route::post('certPhone', 'API\AuthAPIController@certPhone');
+    Route::get('checkToken', 'API\AuthAPIController@checkToken');
+    Route::get('authException', 'API\AuthAPIController@authException')->name('authException');
 });
 
 Route::middleware('auth:api')->group(function(){
@@ -38,5 +40,12 @@ Route::middleware('auth:api')->group(function(){
     
     Route::prefix('/safetyInfo')->group(function(){
        Route::post('setQR', 'API\SafetyInfoAPIController@setSafetyInfo'); 
+    });
+    
+    Route::prefix('/secondPhone')->group(function(){
+        Route::post('set', 'API\SecondPhoneAPIController@setSecondPhone');
+        Route::get('get', 'API\SecondPhoneAPIController@getSecondPhone');
+        Route::post('delete', 'API\SecondPhoneAPIController@deleteSecondPhone');
+        Route::post('setRep', 'API\SecondPhoneAPIController@setRep');
     });
 });
