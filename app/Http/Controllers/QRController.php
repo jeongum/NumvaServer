@@ -27,11 +27,6 @@ class QRController extends Controller
         
         $this->sendNoti($safety_info->user->phone);
         
-<<<<<<< HEAD
-=======
-        $memo = $safety_info->memo;
-        
->>>>>>> secondPhone
         return view('qr/service', compact('memo'));
     }
     

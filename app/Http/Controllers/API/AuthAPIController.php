@@ -156,19 +156,6 @@ class AuthAPIController extends Controller
         }
     }
     
-<<<<<<< HEAD
-    public function registerSecPhone(Request $request){
-        $user = $request->user();
-        $user->second_phone = $request->second_phone;
-        $user->save();
-        
-        return response()->json([
-            "isSuccess" => true,
-            "code" => 200,
-            "message" => "대리 전화번호 설정 완료"
-        ]);
-        
-=======
     public function checkToken(Request $request){
         $isValid = Auth::guard('api')->check();
         if($isValid) {
@@ -183,7 +170,6 @@ class AuthAPIController extends Controller
             "code" => 400,
             "message" => "유효하지 않은 토큰"
         ]);
->>>>>>> secondPhone
     }
     
     public function certPhone(Request $request){
