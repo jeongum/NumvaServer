@@ -16,14 +16,14 @@ class SafetyInfo extends Model
     protected $guarded = ['id', 'created_at', 'updated_at'];
     
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
     
     public function qrcode(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'qr_id');
     }
     
     public function memo(){
-        return $this->belongsTo(Memo::class);
+        return $this->belongsTo(Memo::class, 'memo_id');
     }
 }

@@ -31,7 +31,7 @@ class User extends Authenticatable
     ];
   
     public function memo(){
-        return $this->hasOne(Memo::class, 'user_id');
+        return $this->hasMany(Memo::class, 'user_id');
     }
     
     public function safety_info(){

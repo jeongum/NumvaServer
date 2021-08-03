@@ -13,37 +13,24 @@ use App\Models\SafetyInfo;
 
 class MemoService
 {
-    public function setMemo($memo, $user_id){
-        if(Memo::where('user_id', $user_id)->exists()){
-            $cur_memo = Memo::where('user_id', $user_id) ->first();
-            $cur_memo -> memo = $memo;
-            $cur_memo -> save();
-            
-            $safety_info = SafetyInfo::where('user_id', $user_id)->first();
-            $safety_info -> memo_id = $cur_memo->id;
-            $safety_info -> save();
-            
-            return true;
+    public function setMemo($data, $user_id){
+        $safety_info = SafetyInfo::find($data['safety_info_id']);
+        if($safety_info == null || $safety_info->user_id != $user_id) return 'Invalid Data';
+        if($safety_info->memo_id != null){
+            $memo = $safety_info->memo;
+            $memo->memo = $data['memo'];
+            $memo->save();
         }
-        $data = array(
-            'user_id' => $user_id,
-            'memo' => $memo
-        );
-        $new_memo = Memo::create($data);
-        
-        $safety_info = SafetyInfo::where('user_id', $user_id)->first();
-        $safety_info -> memo_id = $new_memo->id;
-        $safety_info -> save();
-
-        return true;
+        else $memo = Memo::create($data);
+        $safety_info->memo_id = $memo->id;
+        $safety_info->save();
+        return $memo;
     }
     
-    public function getMemo($user_id){
-        if(Memo::where('user_id', $user_id)->exists()){
-            $cur_memo = Memo::where('user_id', $user_id) ->first();
-            return $cur_memo;
-        }
-        return null;
+    public function getMemo($data, $user_id){
+        $safety_info = SafetyInfo::find($data);
+        if($safety_info == null || $safety_info->user_id != $user_id) return 'Invalid Data';
+        return $safety_info -> memo;
     }
     
 }

@@ -15,4 +15,5 @@ class QRData extends Model
     public function safety_info(){
         return $this->hasOne(SafetyInfo::class, 'qr_id');
     }
+    
 }

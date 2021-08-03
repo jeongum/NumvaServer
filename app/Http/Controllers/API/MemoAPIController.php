@@ -8,46 +8,49 @@ use App\Services\MemoService;
 
 class MemoAPIController extends Controller
 {
-    function setCurrentMemo(Request $request){
+    public  $memo_service ;
+    
+    public function __construct()
+    {
+        $this->memo_service = new MemoService();
+    }
+    
+    function setMemo(Request $request){
         $data = $request->all();
         $user = $request->user()->id;
         
-        $memo_service = new MemoService();
-        
-        $memo = $data['memo'];
-        
-        if($memo_service->setMemo($memo, $user)){
+        $response = $this->memo_service->setMemo($data, $user);
+        if($response !== 'Invalid Data'){
             return response()->json([
-                "memo" => $memo,
                 "isSuccess" => true,
                 "code" => 200,
-                "message" => "메모 저장 성공"
+                "message" => "요청 성공",
+                "result" => $response,
             ]);
         }
         
         return response()->json([
             "isSuccess" => false,
-            "code" => 400,
-            "message" => "메모 저장 실패"
-        ]);
+            "code" => -103,
+            "message" => "매칭된 데이터 없음"
+        ],400);
     }
     
-    function getCurrentMemo(Request $request){
-        $memo_service = new MemoService();
-        $memo = $memo_service->getMemo($request->user()->id);
-        if($memo != null){
+    function getMemo(Request $request){
+        $memo = $this->memo_service->getMemo($request->safety_info_id, $request->user()->id);
+        if($memo !== 'Invalid Data'){
             return response()->json([
-                "memo" => $memo,
                 "isSuccess" => true,
                 "code" => 200,
-                "message" => "메모 가져오기 성공"
-            ]);
+                "message" => "요청 성공",
+                "result" => $memo
+            ],200);
         }
         return response()->json([
             "isSuccess" => false,
-            "code" => 400,
-            "message" => "메모 없음"
-        ]);
+            "code" => -103,
+            "message" => "매칭된 데이터 없음"
+        ],400);
     }
     
 }

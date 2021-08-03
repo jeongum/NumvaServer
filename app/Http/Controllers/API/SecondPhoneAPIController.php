@@ -17,20 +17,12 @@ class SecondPhoneAPIController extends Controller
     
     public function getSecondPhone(Request $request){
         $result = $this->second_phone_service->getSecondPhone($request->user()->id);
-        
-        if($result == 'doesnt exist'){
-            return response()->json([
-                "isSuccess" => false,
-                "code" => 400,
-                "message" => "저장된 정보 없음"
-            ]);
-        }
         return response()->json([
-            "data" => $result,
             "isSuccess" => true,
             "code" => 200,
-            "message" => "2차전화번호  가져오기 성공"
-        ]);
+            "message" => "요청 성공",
+            "result" => $result,
+        ], 200);
     }
     
     public function setSecondPhone(Request $request){
@@ -42,15 +34,15 @@ class SecondPhoneAPIController extends Controller
         if($response == 'overMaximum'){
             return response()->json([
                 "isSuccess" => false,
-                "code" => 400,
+                "code" => -601,
                 "message" => "최대 저장개수 초과"
-            ]);
+            ],400);
         }
         return response()->json([
-            "data" => $data,
             "isSuccess" => true,
             "code" => 200,
-            "message" => "2차전화번호 등록 성공"
+            "message" => "요청 성공",
+            "result" => $data
         ]);
     }
     
@@ -63,15 +55,15 @@ class SecondPhoneAPIController extends Controller
         if($result == 'Invalid data'){
             return response()->json([
                 "isSuccess" => false,
-                "code" => 400,
-                "message" => "유효하지 않은 ID"
-            ]);
+                "code" => -602,
+                "message" => "유효하지 않은 변수값"
+            ],400);
         }
         return response()->json([
-            "data" => $result,
             "isSuccess" => true,
             "code" => 200,
-            "message" => "2차전화번호 삭제 성공"
+            "message" => "요청 성공",
+            "result" => $result
         ]);
     }
     
@@ -81,11 +73,18 @@ class SecondPhoneAPIController extends Controller
             'second_phone_id' => $request->second_phone_id
         );
         $result = $this->second_phone_service->setRep($data);
+        if($result == '103'){
+            return response()->json([
+                "isSuccess" => false,
+                "code" => -103,
+                "message" => "매칭된 데이터 없음"
+            ],400);
+        }
         return response()->json([
-            "data" => $result,
             "isSuccess" => true,
             "code" => 200,
-            "message" => "대표 2차전화번호 설정 성공"
+            "message" => "요청 성공",
+            "result" => $result
         ]);
     }
 }
