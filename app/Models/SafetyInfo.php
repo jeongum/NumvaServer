@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\QRData;
 use App\Models\User;
 use App\Models\Memo;
+use App\Models\SafetyNumber;
 
 class SafetyInfo extends Model
 {
@@ -25,5 +26,9 @@ class SafetyInfo extends Model
     
     public function memo(){
         return $this->belongsTo(Memo::class, 'memo_id');
+    }
+    
+    public function safety_number(){
+        return $this->belongsTo(SafetyNumber::class, 'sn_id');
     }
 }

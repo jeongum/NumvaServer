@@ -13,18 +13,18 @@ use App\Models\SafetyInfo;
 class QRController extends Controller
 {
     public function index(){
-        $safety_infos = SafetyInfo::with('user')->get();
+        $users = User::all();
         $qrs = QRData::all();
         
-        return view('qr/index',compact('safety_infos','qrs'));
+        return view('qr/index',compact('users','qrs'));
     }
     
     /* Show QR View to Scanner */
     public function service(){
         $qr_id = Session::get('qr_id');
-        $qrcode = QRData::where('qr_id', '784495')->first();
+        $qrcode = QRData::where('qr_id', $qr_id)->first();
         $safety_info = SafetyInfo::where('qr_id', $qrcode->id)->first();
-        
+        $memo = is_null($safety_info->memo)?"":$safety_info->memo;
         $this->sendNoti($safety_info->user->phone);
         
         return view('qr/service', compact('memo'));
@@ -49,7 +49,38 @@ class QRController extends Controller
             "url" => $img_path
         ]);
         
-        return view('qr/generate');
+        return redirect()->route('qr.index');
+    }
+    
+    public function connectQR(Request $request){
+        $data = array(
+            "qr_id" => $request->qr_id,
+            "user_id" => $request->user_id
+        );
+        
+        $qr=QRData::find($data['qr_id']);
+        $qr->is_allot = 'Y';
+        $qr->save();
+        
+        $response = array(
+            'user_id' => $data['user_id'],
+            'qr_id' => $qr->id,
+            'name' => $data['qr_id']
+        );
+        SafetyInfo::create($response);
+        return redirect()->route('qr.index');
+    }
+    
+    public function unconnectQR(Request $request){
+        $data = array(
+            "qr_id" => $request->qr_id,
+        );
+        $qr=QRData::find($data['qr_id']);
+        $si = SafetyInfo::where('qr_id',$data['qr_id'])->first();
+        $qr->is_allot = 'N';
+        $qr->save();
+        $si->delete();
+        return redirect()->route('qr.index');
     }
     
     /* Send NOTI */

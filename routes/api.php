@@ -19,8 +19,7 @@ Route::prefix('/auth')->group(function () {
     Route::post('register', 'API\AuthAPIController@register');
     Route::post('login', 'API\AuthAPIController@login');
     Route::middleware('auth:api')->group(function() {
-        Route::get('user', 'API\AuthAPIController@getUser');
-        Route::post('changeNick', 'API\AuthAPIController@changeNick');
+        Route::get('logout', 'API\AuthAPIController@logout');
     });
     Route::get('checkToken', 'API\AuthAPIController@checkToken');
     Route::get('authException', 'API\AuthAPIController@authException')->name('authException');

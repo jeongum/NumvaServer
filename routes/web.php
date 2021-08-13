@@ -22,7 +22,10 @@ Route::get('/howtouse', function () {
 });
 
 /* Route for QR scan */
-Route::get('/qr/generate', 'QRController@index');
+Route::get('/qr/index', 'QRController@index')->name('qr.index');
+Route::get('/qr/generate', 'QRController@generateQRCode');
+Route::post('/qr/connectQR', 'QRController@connectQR')->name('qr.connectQR');
+Route::post('/qr/unconnectQR', 'QRController@unconnectQR')->name('qr.unconnectQR');
 Route::get('/qr/service', 'QRController@service')->name('qr.service');
 Route::get('/qr/{slug}', function ($slug) {
     return redirect()->route('qr.service')->with('qr_id',$slug);

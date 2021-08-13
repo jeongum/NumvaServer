@@ -49,9 +49,9 @@ class SafetyInfoService
         foreach($si as $item){
             $safety_info[$idx++] = [
                 'id' => $item->id,
-                'safety_info' => [
-                    'memo' => isset($item->memo)? $item->memo: null,
-                ]
+                'name' => $item->name,                
+                'memo' => isset($item->memo)?$item->memo->memo : null,
+                'safety_number'=> isset($item->safety_number)?$item->safety_number->number : null
             ];
         }
         return $safety_info;

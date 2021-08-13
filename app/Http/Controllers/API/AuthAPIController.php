@@ -51,7 +51,7 @@ class AuthAPIController extends Controller
         
     public function logout(Request $request) {
         $request->user()->token()->revoke();
-        return $this->Success($result);
+        return $this->Success(null);
     }
     
     public function checkToken(Request $request){
