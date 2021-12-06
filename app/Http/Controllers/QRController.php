@@ -8,16 +8,11 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\QRData;
 use App\Models\User;
 use App\Models\Memo;
+use App\Models\SafetyNumber;
 use App\Models\SafetyInfo;
 
 class QRController extends Controller
 {
-    public function index(){
-        $users = User::all();
-        $qrs = QRData::all();
-        
-        return view('qr/index',compact('users','qrs'));
-    }
     
     /* Show QR View to Scanner */
     public function service(){
@@ -28,59 +23,6 @@ class QRController extends Controller
         $this->sendNoti($safety_info->user->phone);
         
         return view('qr/service', compact('memo'));
-    }
-    
-    /* Generate QR */
-    public function generateQRCode(){
-        $qr_id = random_int(100000,999999);
-        while(QRData::where('qr_id', $qr_id)->exists()){
-            $qr_id = random_int(100000,999999);
-        }
-        $qr_path = 'http://ec2-13-125-250-97.ap-northeast-2.compute.amazonaws.com/qr/'.$qr_id;
-        $img_path = 'img/qr/'.$qr_id.'.png';
-       
-        QrCode::format('png')
-                ->size(500)
-                ->merge('/public/img/logo_purple_with_bg.png', .2)
-                ->generate($qr_path, public_path($img_path));
-        
-        QRData::create([
-            "qr_id" => $qr_id,
-            "url" => $img_path
-        ]);
-        
-        return redirect()->route('qr.index');
-    }
-    
-    public function connectQR(Request $request){
-        $data = array(
-            "qr_id" => $request->qr_id,
-            "user_id" => $request->user_id
-        );
-        
-        $qr=QRData::find($data['qr_id']);
-        $qr->is_allot = 'Y';
-        $qr->save();
-        
-        $response = array(
-            'user_id' => $data['user_id'],
-            'qr_id' => $qr->id,
-            'name' => $data['qr_id']
-        );
-        SafetyInfo::create($response);
-        return redirect()->route('qr.index');
-    }
-    
-    public function unconnectQR(Request $request){
-        $data = array(
-            "qr_id" => $request->qr_id,
-        );
-        $qr=QRData::find($data['qr_id']);
-        $si = SafetyInfo::where('qr_id',$data['qr_id'])->first();
-        $qr->is_allot = 'N';
-        $qr->save();
-        $si->delete();
-        return redirect()->route('qr.index');
     }
     
     /* Send NOTI */

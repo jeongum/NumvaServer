@@ -7,10 +7,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
     protected $table = 'users';
     /**
      * The attributes that are mass assignable.
@@ -44,5 +45,13 @@ class User extends Authenticatable
     
     public function rep_second_phone(){
         return $this->hasMany(SecondPhone::class, 'user_id')->where('isrep','Y');
+    }
+    
+    public function quick_memo(){
+        return $this->hasMany(QuickMemo::class, 'user_id');
+    }
+    
+    public function social_user(){
+        return $this->hasOne(User::class, 'user_id');
     }
 }

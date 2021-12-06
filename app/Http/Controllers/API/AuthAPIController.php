@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\SocialUser;
 
 class AuthAPIController extends Controller
 {
@@ -26,13 +27,38 @@ class AuthAPIController extends Controller
             'password' => isset($request -> password)?bcrypt($request->password): $isdata = true,
             'phone' => isset($request -> phone)?$request -> phone: $isdata = true,
             'birth' => isset($request -> birth)?$request -> birth: null,
-            'nickname' => isset($request -> nickname)?$request -> nickname: $isdata = true
+            'nickname' => isset($request -> nickname)?$request -> nickname: $isdata = true,
+            'agreement_marketing' => isset($request -> agreement_marketing)?$request -> agreement_marketing: $isdata = true
         );
         if($isdata) return $this->NoParam();
         if(User::where([['name',$data['name']], ['phone', $data['phone']], ['birth', $data['birth']]])->exists()) return $this->AlreadyExists();
         
         $user = User::create($data);
-        return $this->Success($user);
+        return $this->Success(null);
+    }
+    
+    public function socialRegister(Request $request){
+        $isdata = false;
+        $user_data = array(
+            'name' => isset($request -> name)?$request->name: $isdata = true,
+            'email' => isset($request -> email)?$request -> email: $isdata = true,
+            'phone' => isset($request -> phone)?$request -> phone: $isdata = true,
+            'birth' => isset($request -> birth)?$request -> birth: null,
+            'nickname' => isset($request -> nickname)?$request -> nickname: $isdata = true,
+            'agreement_marketing' => isset($request -> agreement_marketing)?$request -> agreement_marketing: $isdata = true
+        );
+        $social_data = array(
+            'provider' => isset($request->provider)?$request->provider:$isdata = true,
+            'social_id' => isset($request->social_id)?$request->social_id:$isdata = true,
+        );
+        if($isdata) return $this->NoParam();
+        if(User::where('email',$user_data['email'])->exists()) return $this->AlreadyExists();
+
+        $user = User::create($user_data);
+        $social_data['user_id'] = $user->id;
+        SocialUser::create($social_data);
+        $accessToken = $user->createToken('authToken')->accessToken;
+        return $this->Success($accessToken);
     }
     
     public function login(Request $request) {
@@ -48,7 +74,44 @@ class AuthAPIController extends Controller
         
         return $this->Success($accessToken);
     }
+    
+    public function socialLogin(Request $request) {
+        $isdata = false;
+        $data = array(
+            'provider' => isset($request -> provider)?$request -> provider: $isdata = true,
+            'social_id' =>isset($request -> social_id)?($request->social_id): $isdata = true,
+        );
+        if($isdata) return $this->NoParam();
         
+        $user = SocialUser::where([['provider',$data['provider']],['social_id',$data['social_id']]])->first()->user;
+
+        $accessToken = $user->createToken('authToken')->accessToken;
+        
+        return $this->Success($accessToken);
+    }
+    
+    public function linkSocial(Request $request){
+        $isdata = false;
+        $data = array(
+            'provider' => isset($request -> provider)?$request -> provider: $isdata = true,
+            'social_id' =>isset($request -> social_id)?($request->social_id): $isdata = true,
+            'email' => isset($request -> email)?($request->email):$isdata = true
+        );
+        
+        if($isdata) return $this->NoParam();
+        
+        $user = User::where('email', $data['email'])->first();
+        $socail_user = SocialUser::create([
+            'provider' => $data['provider'],
+            'social_id' => $data['social_id'],
+            'user_id' => $user->id,
+        ]);
+        
+        $accessToken =$user->createToken('authToken')->accessToken;
+        return $this->Success($accessToken);
+    }
+    
+    
     public function logout(Request $request) {
         $request->user()->token()->revoke();
         return $this->Success(null);
@@ -58,6 +121,11 @@ class AuthAPIController extends Controller
         $isValid = Auth::guard('api')->check();
         if($isValid) return $this->Success(null);
         return $this->NoMatchedData();
+    }
+    
+    public function delete(Request $request){
+        $request->user()->delete();
+        return $this->Success(null);
     }
     
     public function NoParam(){

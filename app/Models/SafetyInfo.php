@@ -21,7 +21,7 @@ class SafetyInfo extends Model
     }
     
     public function qrcode(){
-        return $this->belongsTo(User::class, 'qr_id');
+        return $this->belongsTo(QRData::class, 'qr_id');
     }
     
     public function memo(){

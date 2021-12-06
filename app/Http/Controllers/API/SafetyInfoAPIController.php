@@ -31,6 +31,7 @@ class SafetyInfoAPIController extends Controller
         if($request->qr_id == null) return $this->NoParam();
         $response = $this->safety_info_service->getSafetyInfoFromQR($request->qr_id);
         if($response == '103') return $this->NoMatchedData();
+        if($response == '701') return $this->UnRegistered();
         return $this->Success($response);
     }
 
@@ -42,6 +43,12 @@ class SafetyInfoAPIController extends Controller
     public function setSIName(Request $request){
         if(is_null($request->name) || is_null($request->safety_info_id)) return $this->NoParam();
         $result = $this->safety_info_service->setSIName($request->safety_info_id, $request->name);
+        if($result == '103') return $this->NoMatchedData();
+        return $this->Success(null);
+    }
+    public function deleteSI(Request $request){
+        if(is_null($request->safety_info_id)) return $this->NoParam();
+        $result = $this->safety_info_service->deleteSI($request->safety_info_id);
         if($result == '103') return $this->NoMatchedData();
         return $this->Success(null);
     }
@@ -68,6 +75,14 @@ class SafetyInfoAPIController extends Controller
             "isSuccess" => false,
             "code" => -102,
             "message" => "해당 데이터 존재"
+        ],400);
+    }
+    
+    public function UnRegistered(){
+        return response()->json([
+            "isSuccess" => false,
+            "code" => -701,
+            "message" => "등록되지 않은 QR"
         ],400);
     }
     

@@ -17,15 +17,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/howtouse', function () {
-    return view('howtouse');
+Route::get('/help/{category}', 'HelpController@faq')->name('help');
+Route::post('/sendMail', 'HelpController@sendMail')->name('sendMail');
+
+Route::get('/privacy', function () {
+    return view('privacy');
 });
 
 /* Route for QR scan */
-Route::get('/qr/index', 'QRController@index')->name('qr.index');
-Route::get('/qr/generate', 'QRController@generateQRCode');
-Route::post('/qr/connectQR', 'QRController@connectQR')->name('qr.connectQR');
-Route::post('/qr/unconnectQR', 'QRController@unconnectQR')->name('qr.unconnectQR');
 Route::get('/qr/service', 'QRController@service')->name('qr.service');
 Route::get('/qr/{slug}', function ($slug) {
     return redirect()->route('qr.service')->with('qr_id',$slug);
@@ -33,6 +32,13 @@ Route::get('/qr/{slug}', function ($slug) {
 
 /* Admin Page */
 Route::prefix('admin')->group(function(){
-    Route::get('generate-qr', 'QRController@generateQRCode');
+    Route::get('/', 'AdminController@index')->name('admin.index');
+    Route::get('/qr/generate', 'AdminController@generateQRCode');
+    Route::post('/qr/connectQR', 'AdminController@connectQR')->name('admin.connectQR');
+    Route::post('/qr/unconnectQR', 'AdminController@unconnectQR')->name('admin.unconnectQR');
+    Route::get('/user', 'AdminController@userIndex')->name('admin.user');
+    Route::post('/user/delete', 'AdminController@userDelete')->name('admin.deleteUser');
+    Route::get('/secondphone/delete/{id}', 'AdminController@secondphoneDelete')->name('admin.deleteSP');
+    Route::get('/safetyInfo', 'AdminController@safetyInfoIndex')->name('admin.safetyInfo');
 });
 

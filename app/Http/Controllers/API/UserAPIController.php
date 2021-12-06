@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\SocialUser;
 
 class UserAPIController extends Controller
 {
@@ -17,7 +18,8 @@ class UserAPIController extends Controller
             'email' => $request->user()->email,
             'phone' => $request->user()->phone,
             'second_phone' => (($sp = $request->user()->rep_second_phone()->first())==null)?null:$sp->second_phone,
-            'birth' => $request->user()->birth,
+            'birth' =>  \Carbon\Carbon::parse($request->user()->birth)->format('Ymd'),
+            'agreement_marketing' => $request->user()->agreement_marketing
         );
         return $this->Success($user);
     }
@@ -43,9 +45,28 @@ class UserAPIController extends Controller
     }
     
     public function validEmail(Request $request){
-        if(User::where('email', $request->email)->exists())
-            return $this->AlreadyExists();
-            return $this->Success(null);
+        if(User::where('email', $request->email)->exists()){
+            if(User::where('email', $request->email)->first()->deleted_at == null)
+                return $this->AlreadyExists();
+        }
+        return $this->Success(null);
+    }
+
+    public function socialValidEmail(Request $request){
+        if(User::where('email', $request->email)->exists()){
+            $user = User::where('email', $request->email)->first();
+            $social = SocialUser::where('user_id', $user->id)->first();
+            return response()->json([
+                "isSuccess" => false,
+                "code" => -801,
+                "message" => "해당 데이터 존재",
+                "result" => [
+                    'provider' => is_null($social)?"none":$social->provider,
+                    'social_id' => is_null($social)?"none":$social->social_id
+                ]
+            ], 400);
+        }
+        return $this->Success(null);
     }
     
     public function findEmail(Request $request){
