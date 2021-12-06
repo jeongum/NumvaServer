@@ -2,10 +2,8 @@
 
 > **차주의 개인정보보호를 위한 QR번호판 서비스**
 2020.12.28~진행중
-****스타트업 동아리 '이공일' 프로젝트
-> 
 
-[leahJU/NUMVA_web_server](https://github.com/leahJU/NUMVA_web_server)
+****스타트업 동아리 '이공일' 프로젝트
 
 ## 설명
 
